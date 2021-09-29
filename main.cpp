@@ -247,12 +247,6 @@ int main(int argc, char *argv[])
         {
             printDot();
 
-            RGBQUAD q;
-            q.rgbRed = 0;
-            q.rgbBlue = 0xFF;
-            q.rgbGreen = 0;
-            q.rgbReserved = 0;
-
             FIBITMAP *rot = FreeImage_RotateEx(square, static_cast<double>(angle * inv),
                                                0, 0,
                                                wh, hh, FALSE);
