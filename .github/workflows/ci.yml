@@ -39,13 +39,13 @@ jobs:
       shell: bash
       run: |
           cd ${{github.workspace}}/build
-          tar -cvzf HeLeCheLun.tar.gz HeLeCheLun
+          tar -cvzf HeLeCheLun-${{ matrix.distro }}.tar.gz HeLeCheLun
 
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v2
       with:
-        path: ${{github.workspace}}/build/HeLeCheLun.tar.gz
+        path: ${{github.workspace}}/build/HeLeCheLun-${{ matrix.distro }}.tar.gz
         name: HeLeCheLun MinSizeRel
 
   windows-msys2-cmake:
@@ -77,11 +77,11 @@ jobs:
           git submodule update
       - name: CMake configure
         run: |
-          cmake . -G "Ninja" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON -B build
+          cmake . -G "Ninja" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON -B ${{github.workspace}}/build
 
       - name: CMake build
         run: |
-          cmake --build build --target all -- -j 3
+          cmake --build ${{github.workspace}}/build --target all -- -j 3
       - name: Create Package
         if: success()
         shell: bash
