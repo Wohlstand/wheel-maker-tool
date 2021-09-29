@@ -48,6 +48,43 @@ jobs:
         path: ${{github.workspace}}/build/HeLeCheLun-${{ matrix.distro }}.tar.gz
         name: HeLeCheLun MinSizeRel
 
+  macos:
+    strategy:
+       matrix:
+         arch: [x86_64, arm64]
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          git submodule init
+          git submodule update
+
+      - name: CMake configure
+        run: |
+          cmake . -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -B build
+
+      - name: CMake build
+        run: |
+          cmake --build build --target all -- -j 3
+
+      - name: Create Package
+        if: success()
+        shell: bash
+        run: |
+            cd build
+            zip HeLeCheLun-${{ matrix.installs }}.zip HeLeCheLun
+
+      - name: Upload artifact
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+            path: build/HeLeCheLun-macOS-${{ matrix.arch }}.zip
+            name: HeLeCheLun-macOS-${{ matrix.arch }} ${{env.BUILD_TYPE}}
+
   windows-msys2-cmake:
     runs-on: windows-latest
     strategy:
@@ -75,23 +112,25 @@ jobs:
         run: |
           git submodule init
           git submodule update
+
       - name: CMake configure
         run: |
-          cmake . -G "Ninja" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON -B ${{github.workspace}}/build
+          cmake . -G "Ninja" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -B build
 
       - name: CMake build
         run: |
-          cmake --build ${{github.workspace}}/build --target all -- -j 3
+          cmake --build build --target all -- -j 3
+
       - name: Create Package
         if: success()
         shell: bash
         run: |
-            cd ${{github.workspace}}/build
+            cd build
             zip HeLeCheLun-${{ matrix.installs }}.zip HeLeCheLun.exe
 
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v2
         with:
-            path: ${{github.workspace}}/build/HeLeCheLun-${{ matrix.installs }}.zip
-            name: HeLeCheLun${{ matrix.installs }} MinSizeRel
+            path: build/HeLeCheLun-${{ matrix.installs }}.zip
+            name: HeLeCheLun${{ matrix.installs }} ${{env.BUILD_TYPE}}
