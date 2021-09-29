@@ -39,7 +39,7 @@ target_include_directories(HeLeCheLun PRIVATE
 target_link_libraries(HeLeCheLun PRIVATE PGE_FreeImage)
 
 if(NOT APPLE AND NOT MSVC)
-    set_property(TARGET HeLeCheLun APPEND_STRING PROPERTY LINK_FLAGS " -static-libgcc -static-libstdc++")
+    set_property(TARGET HeLeCheLun APPEND_STRING PROPERTY LINK_FLAGS " -static-libgcc -static-libstdc++ -static")
 endif()
 
 if(WIN32)
