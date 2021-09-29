@@ -26,6 +26,7 @@
 
 #include <FreeImageLite.h>
 #include <tclap/CmdLine.h>
+#include <utf8main.h>
 
 
 static bool isPointInCircle(float xa, float ya, float xc, float yc, float r)
@@ -91,9 +92,9 @@ static void printDot()
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-    double   angleStep;
+    int      angleStep;
     uint32_t gifDelay;
     uint32_t maxWidth;
     std::vector<std::string> files;
@@ -109,9 +110,9 @@ int main(int argc, char **argv)
                                                "Interframe delay",
                                                false, 40, "40");
 
-        TCLAP::ValueArg<double> flagAngleStep("a", "angle-step",
-                                              "Interframe delay",
-                                              false, 18.0, "20");
+        TCLAP::ValueArg<int> flagAngleStep("a", "angle-step",
+                                           "Interframe delay",
+                                           false, 18, "18");
 
         TCLAP::ValueArg<uint32_t> flagMaxWidth("w", "max-width",
                                                "Maximum width size",
@@ -237,12 +238,12 @@ int main(int argc, char **argv)
             angleStep *= -1;
         }
 
-        if(angleStep <= 1.0)
-            angleStep = 1.0;
+        if(angleStep <= 1)
+            angleStep = 1;
 
         DWORD dwFrameTime = gifDelay;
 
-        for(double angle = 0; angle < 360.0; angle += angleStep)
+        for(int angle = 0; angle < 360; angle += angleStep)
         {
             printDot();
 
@@ -252,7 +253,7 @@ int main(int argc, char **argv)
             q.rgbGreen = 0;
             q.rgbReserved = 0;
 
-            FIBITMAP *rot = FreeImage_RotateEx(square, angle * inv,
+            FIBITMAP *rot = FreeImage_RotateEx(square, static_cast<double>(angle * inv),
                                                0, 0,
                                                wh, hh, FALSE);
 
