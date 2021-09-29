@@ -46,7 +46,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         path: ${{github.workspace}}/build/HeLeCheLun-Linux-${{ matrix.distro }}.tar.gz
-        name: HeLeCheLun MinSizeRel
+        name: HeLeCheLun-Linux-${{ matrix.distro }} MinSizeRel
 
   macos:
     strategy:
