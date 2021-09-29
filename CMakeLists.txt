@@ -28,7 +28,6 @@ function(pge_set_nopie _target)
     endif()
 endfunction()
 
-
 add_executable(HeLeCheLun main.cpp ${UTF8MAIN_SRCS})
 add_dependencies(HeLeCheLun FreeImage_Local)
 pge_set_nopie(HeLeCheLun)

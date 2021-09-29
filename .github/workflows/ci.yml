@@ -39,6 +39,7 @@ jobs:
       shell: bash
       run: |
           cd ${{github.workspace}}/build
+          strip -s HeLeCheLun
           tar -cvzf HeLeCheLun-Linux-${{ matrix.distro }}.tar.gz HeLeCheLun
 
     - name: Upload artifact
@@ -125,6 +126,7 @@ jobs:
         if: success()
         run: |
             cd build
+            strip -s HeLeCheLun.exe
             zip HeLeCheLun-Windows-${{ matrix.installs }}.zip HeLeCheLun.exe
 
       - name: Upload artifact
