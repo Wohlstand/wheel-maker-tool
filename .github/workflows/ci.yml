@@ -123,7 +123,6 @@ jobs:
 
       - name: Create Package
         if: success()
-        shell: bash
         run: |
             cd build
             zip HeLeCheLun-Windows-${{ matrix.installs }}.zip HeLeCheLun.exe
