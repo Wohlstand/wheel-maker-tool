@@ -1,0 +1,3 @@
+[submodule "ext/FreeImageLite"]
+	path = ext/FreeImageLite
+	url = https://github.com/WohlSoft/libFreeImage.git
