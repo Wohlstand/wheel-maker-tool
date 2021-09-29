@@ -34,12 +34,18 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -- j 3
+
+    - name: Create Package
+      if: success()
+      shell: bash
+      run: |
+          cd ${{github.workspace}}/build
+          tar -cvzf HeLeCheLun.tar.gz HeLeCheLun
 
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v2
       with:
-        path: build/package/thextech-${{ matrix.config.package_filename_game }}-webassembly-${{ steps.vars.outputs.short_ref }}.tar.gz
-        name: ${{ matrix.config.name }} ${{ matrix.config.build_type }}
-      
+        path: ${{github.workspace}}/build/HeLeCheLun.tar.gz
+        name: HeLeCheLun MinSizeRel
