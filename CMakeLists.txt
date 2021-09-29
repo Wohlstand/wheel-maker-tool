@@ -32,7 +32,10 @@ endfunction()
 add_executable(HeLeCheLun main.cpp ${UTF8MAIN_SRCS})
 add_dependencies(HeLeCheLun FreeImage_Local)
 pge_set_nopie(HeLeCheLun)
-target_include_directories(HeLeCheLun PRIVATE "${DEPENDENCIES_INSTALL_DIR}/include")
+target_include_directories(HeLeCheLun PRIVATE
+    "${DEPENDENCIES_INSTALL_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ext"
+)
 target_link_libraries(HeLeCheLun PRIVATE PGE_FreeImage)
 
 if(NOT APPLE AND NOT MSVC)
