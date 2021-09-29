@@ -39,13 +39,13 @@ jobs:
       shell: bash
       run: |
           cd ${{github.workspace}}/build
-          tar -cvzf HeLeCheLun-${{ matrix.distro }}.tar.gz HeLeCheLun
+          tar -cvzf HeLeCheLun-Linux-${{ matrix.distro }}.tar.gz HeLeCheLun
 
     - name: Upload artifact
       if: success()
       uses: actions/upload-artifact@v2
       with:
-        path: ${{github.workspace}}/build/HeLeCheLun-${{ matrix.distro }}.tar.gz
+        path: ${{github.workspace}}/build/HeLeCheLun-Linux-${{ matrix.distro }}.tar.gz
         name: HeLeCheLun MinSizeRel
 
   macos:
@@ -76,7 +76,7 @@ jobs:
         shell: bash
         run: |
             cd build
-            zip HeLeCheLun-${{ matrix.installs }}.zip HeLeCheLun
+            zip HeLeCheLun-macOS-${{ matrix.arch }}.zip HeLeCheLun
 
       - name: Upload artifact
         if: success()
@@ -126,11 +126,11 @@ jobs:
         shell: bash
         run: |
             cd build
-            zip HeLeCheLun-${{ matrix.installs }}.zip HeLeCheLun.exe
+            zip HeLeCheLun-Windows-${{ matrix.installs }}.zip HeLeCheLun.exe
 
       - name: Upload artifact
         if: success()
         uses: actions/upload-artifact@v2
         with:
-            path: build/HeLeCheLun-${{ matrix.installs }}.zip
+            path: build/HeLeCheLun-Windows-${{ matrix.installs }}.zip
             name: HeLeCheLun${{ matrix.installs }} ${{env.BUILD_TYPE}}
